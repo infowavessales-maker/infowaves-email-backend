@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const apiRoutes = require('./routes/api');
 
 app.use(cors({
-    origin: "https://infowaves.co.in"
+    origin: ["https://infowaves.co.in", "https://infowaves-email.netlify.app", "http://localhost:5173"]
 }));
 app.use(express.json());
 
