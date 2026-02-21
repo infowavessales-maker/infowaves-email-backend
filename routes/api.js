@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getSheetData, oauth2Client } = require('../services/googleService');
+const { getSheetData, oauth2Client, sendEmail } = require('../services/googleService');
 const { addToQueue, getLogs, getQueueStatus } = require('../services/emailQueue');
 
 // Auth URL generation (for initial setup if needed)
@@ -72,6 +72,18 @@ router.get('/logs', (req, res) => {
 // Get Queue Status
 router.get('/status', (req, res) => {
     res.json(getQueueStatus());
+});
+
+// Simple Test Email Route
+router.post('/send-email', async (req, res) => {
+    try {
+        const { to, subject, html } = req.body;
+        await sendEmail(to, subject, html);
+        res.json({ success: true, message: 'Test email sent successfully' });
+    } catch (error) {
+        console.error('Error in /send-email route:', error);
+        res.status(500).json({ error: "Failed to send email", details: error.message });
+    }
 });
 
 module.exports = router;
